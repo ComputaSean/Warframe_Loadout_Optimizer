@@ -1,40 +1,34 @@
-package loadout
+package warframe.loadout
 
-import mod.Mod
+import genericGame.loadout.LoadoutI
+import genericGame.mod.ModI
 import vector.Vector
-import vector.Vectorizable
 
-class Loadout(private val maxCapacity: Byte, private val numStats: Byte, private val baseStats: Vector) : Vectorizable {
+class Loadout(private val maxCapacity: Int, private val baseStats: Vector) : LoadoutI {
 
-    private val mods: MutableList<Mod> = ArrayList()
+    private val mods: MutableList<ModI> = ArrayList()
 
-    init {
-        if (baseStats.getDimension() != numStats.toInt()) {
-            throw LoadoutException("Base stats don't match the loadout's number of stats.")
-        }
-    }
-
-    fun addMod(mod: Mod) {
+    override fun addMod(mod: ModI) {
         if (mods.size >= maxCapacity) throw LoadoutException("Maximum amount of mods are already installed.")
         if (checkModConflict(mod)) throw LoadoutException("Trying to add a conflicting mod.")
         mods.add(mod)
     }
 
-    fun addAllMods(mod: List<Mod>) {
+    fun addAllMods(mod: List<ModI>) {
         mod.forEach { addMod(it) }
     }
 
-    fun removeMod(mod: Mod) {
+    override fun removeMod(mod: ModI) {
         if (!mods.remove(mod)) throw LoadoutException("Specified mod wasn't installed in this loadout.")
     }
 
-    fun getDrain(): Byte {
-        var drain: Byte = 0
-        mods.forEach { drain = (drain + it.drain).toByte() }
+    fun getDrain(): Int {
+        var drain = 0
+        mods.forEach { drain += it.drain }
         return drain
     }
 
-    fun checkModConflict(mod: Mod): Boolean {
+    fun checkModConflict(mod: ModI): Boolean {
         return checkModConflict(mod.family)
     }
 
@@ -43,13 +37,13 @@ class Loadout(private val maxCapacity: Byte, private val numStats: Byte, private
         return false
     }
 
-    fun clearLoadout() {
+    override fun clear() {
         mods.clear()
     }
 
     override fun getVector(): Vector {
         var vector: Vector = baseStats
-        mods.forEach { vector += it.stats }
+        mods.forEach { vector += it.getVector() }
         return vector
     }
 
@@ -60,7 +54,7 @@ class Loadout(private val maxCapacity: Byte, private val numStats: Byte, private
         var summary = ""
         summary += String.format("Total drain of %d. ", getDrain())
         mods.forEach { summary += String.format("%s at rank %d, ", it.name, it.rank) }
-        return summary.substring(0, summary.length - 2)
+        return summary.substring(0, summary.length - 2) + "."
     }
 
 }

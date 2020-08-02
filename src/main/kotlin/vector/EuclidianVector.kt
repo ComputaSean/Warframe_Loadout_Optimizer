@@ -61,11 +61,6 @@ class EuclidianVector(private vararg val comps: Double) : Vector {
         return comps[index]
     }
 
-    override operator fun set(index: Int, value: Double) {
-        if (index < 0 || index >= comps.size) throw VectorException("Vector components out of bounds.")
-        comps[index] = value
-    }
-
     override fun getVector(): Vector {
         return this
     }

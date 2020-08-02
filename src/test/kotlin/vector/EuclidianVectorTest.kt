@@ -1,7 +1,6 @@
 package vector
 
-import org.junit.jupiter.api.Assertions.*
-import kotlin.math.exp
+import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.math.sqrt
 
 internal class EuclidianVectorTest {

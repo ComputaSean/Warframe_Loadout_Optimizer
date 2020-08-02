@@ -1,9 +1,9 @@
-package modParser
+package warframe.modParser
 
-data class RawJSONMod(
-    val baseDrain: Byte,
+data class JSONMod(
+    val baseDrain: Int,
     val compatName: String,
-    val fusionLimit: Byte,
+    val fusionLimit: Int,
     val levelStats: List<LevelStat>,
     val name: String,
     val type: String,

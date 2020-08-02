@@ -102,5 +102,4 @@ gradlew
 gradlew.bat
 settings.gradle
 gradle.properties
-
-src/main/kotlin/main.kt
+src/main/resources

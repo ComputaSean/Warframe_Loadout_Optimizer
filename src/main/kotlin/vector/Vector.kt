@@ -10,7 +10,6 @@ interface Vector : Iterable<Double>, Vectorizable {
     fun getDimension(): Int
 
     operator fun get(index: Int): Double
-    operator fun set(index: Int, value: Double)
 
     operator fun plus(v: Vector): Vector {
         return add(v)

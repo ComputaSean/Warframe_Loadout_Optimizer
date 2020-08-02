@@ -1,28 +1,36 @@
-package mod
+package warframe.modCreator
 
+import genericGame.mod.ModI
+import genericGame.modCreator.ModCreatorI
 import vector.Vector
+import warframe.mod.Mod
 
 class ModCreator(
-    val name: String,
-    val maxRank: Byte,
-    val baseDrain: Byte,
+    override val name: String,
+    override val maxRank: Int,
+    val baseDrain: Int,
     val baseStats: Vector,
-    val family: String
-) {
+    override val family: String
+) : ModCreatorI {
 
-    private val rankedMods: MutableMap<Byte, Mod> = HashMap()
+    private val rankedMods: MutableMap<Int, Mod> = HashMap()
 
-    fun getRank(rank: Byte): Mod {
-        checkValidRank(rank)
-        if (!rankedMods.containsKey(rank)) {
-            rankedMods[rank] =
-                Mod(name, rank, (baseDrain + rank).toByte(), family, baseStats * (rank + 1).toDouble())
+    override fun getRank(i: Int): ModI {
+        checkValidRank(i)
+        if (!rankedMods.containsKey(i)) {
+            rankedMods[i] =
+                Mod(name, i, baseDrain + i, family, baseStats * (i + 1).toDouble())
         }
-        return rankedMods[rank]!!
+        return rankedMods[i]!!
     }
 
-    private fun checkValidRank(rank: Byte) {
-        if (rank < 0 || rank > maxRank) throw ModCreatorException(String.format("Invalid mod rank for %s", name))
+    private fun checkValidRank(rank: Int) {
+        if (rank < 0 || rank > maxRank) throw ModCreatorException(
+            String.format(
+                "Invalid mod rank for %s",
+                name
+            )
+        )
     }
 
     override fun equals(other: Any?): Boolean {

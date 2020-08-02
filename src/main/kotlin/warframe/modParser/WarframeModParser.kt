@@ -1,18 +1,19 @@
-package modParser
+package warframe.modParser
 
-import mod.ModCreator
+import genericGame.modCreator.ModCreatorI
 import vector.EuclidianVector
 import vector.Vector
+import warframe.modCreator.ModCreator
 
 class WarframeModParser(filePath: String) : JSONModParser(filePath) {
 
-    override fun isDesired(rawMod: RawJSONMod): Boolean {
-        if (rawMod.type != "Warframe Mod" && rawMod.type != "Warframe") return false
-        if (rawMod.compatName != "WARFRAME") return false
-        if (rawMod.uniqueName.contains("PvP") || rawMod.uniqueName.contains("Augment")) return false
-        if (rawMod.uniqueName.contains("Beginner")) return false
-        if (rawMod.name == "Energy Conversion") return false
-        for (s in rawMod.levelStats[0].stats) {
+    override fun isDesired(jsonMod: JSONMod): Boolean {
+        if (jsonMod.type != "Warframe Mod" && jsonMod.type != "Warframe") return false
+        if (jsonMod.compatName != "WARFRAME") return false
+        if (jsonMod.uniqueName.contains("PvP") || jsonMod.uniqueName.contains("Augment")) return false
+        if (jsonMod.uniqueName.contains("Beginner")) return false
+        if (jsonMod.name == "Energy Conversion") return false
+        for (s in jsonMod.levelStats[0].stats) {
             if (s.contains("Ability Duration") || s.contains("Ability Efficiency") ||
                 s.contains("Ability Range") || s.contains("Ability Strength")
             ) return true
@@ -20,13 +21,19 @@ class WarframeModParser(filePath: String) : JSONModParser(filePath) {
         return false
     }
 
-    override fun buildModCreator(rawMod: RawJSONMod): ModCreator {
-        return ModCreator(rawMod.name, rawMod.fusionLimit, rawMod.baseDrain, getStats(rawMod), getFamily(rawMod.name))
+    override fun buildModCreator(jsonMod: JSONMod): ModCreatorI {
+        return ModCreator(
+            jsonMod.name,
+            jsonMod.fusionLimit,
+            jsonMod.baseDrain,
+            getStats(jsonMod),
+            getFamily(jsonMod.name)
+        )
     }
 
-    private fun getStats(rawMod: RawJSONMod): Vector {
+    private fun getStats(jsonMod: JSONMod): Vector {
         val baseStats = DoubleArray(4)
-        for (r in rawMod.levelStats[0].stats) {
+        for (r in jsonMod.levelStats[0].stats) {
             val arr = r.split(",")
             for (s in arr) {
                 var index = -1

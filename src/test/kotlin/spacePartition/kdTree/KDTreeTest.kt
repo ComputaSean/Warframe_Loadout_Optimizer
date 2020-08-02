@@ -1,9 +1,10 @@
 package spacePartition.kdTree
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertTrue
 import vector.EuclidianVector
 import vector.Vector
-import java.util.HashSet
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.pow
 import kotlin.math.sqrt
 
