@@ -2,6 +2,7 @@ import genericGame.optimizer.LoadoutOptimizer
 import spacePartition.kdTree.KDTreeBuilder
 import vector.EuclidianVector
 import vector.Vector
+import warframe.loadout.Loadout
 import warframe.loadoutGenerator.LoadoutGenerator
 import warframe.modParser.WarframeModParser
 
@@ -28,17 +29,25 @@ fun main(args: Array<String>) {
         if (input.isNotEmpty()) {
             if (pattern.matches(input)) {
                 val vector = convertToVector(input)
-                val loadouts = optimizer.getClosest(vector)
+                val loadouts = optimizer.getClosest(vector) as (MutableList<Loadout>)
+                loadouts.sort()
                 val closestVector = loadouts[0].getVector()
                 if (loadouts.size > 1) print("Loadouts with the closest stats have ")
                 else print("The loadout with the closest stats has ")
                 println(
                     String.format(
-                        "%.2f duration, %.2f efficiency, %.2f range, and %.2f strength:",
+                        "%.2f duration, %.2f efficiency, %.2f range, and %.2f strength.",
                         closestVector[0], closestVector[1], closestVector[2], closestVector[3]
                     )
                 )
-                loadouts.forEach { println("\t" + it) }
+                var numCurInstalled = -1
+                for (loadout in loadouts) {
+                    if (loadout.getNumMods() != numCurInstalled) {
+                        numCurInstalled = loadout.getNumMods()
+                        println(String.format("\tLoadout(s) with %d installed mods:", numCurInstalled))
+                    }
+                    println("\t\t" + loadout)
+                }
             } else println("Invalid input.")
             println()
         }

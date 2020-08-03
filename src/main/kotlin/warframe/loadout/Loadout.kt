@@ -22,10 +22,14 @@ class Loadout(private val maxCapacity: Int, private val baseStats: Vector) : Loa
         if (!mods.remove(mod)) throw LoadoutException("Specified mod wasn't installed in this loadout.")
     }
 
-    fun getDrain(): Int {
+    override fun getDrain(): Int {
         var drain = 0
         mods.forEach { drain += it.drain }
         return drain
+    }
+
+    override fun getNumMods(): Int {
+        return mods.size
     }
 
     fun checkModConflict(mod: ModI): Boolean {
