@@ -2,7 +2,7 @@ package spacePartition.kdTree
 
 import spacePartition.SpacePartition
 import vector.Vector
-import vector.VectorComparator
+import vector.VectorIndexComparator
 import vector.Vectorizable
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -34,7 +34,7 @@ class KDTree(vectors: List<Vectorizable>, private val dimension: Int) :
         }
 
         val splitIndex = depth % dimension
-        val sortedKeys = keys.sortedWith(VectorComparator(splitIndex))
+        val sortedKeys = keys.sortedWith(VectorIndexComparator(splitIndex))
         val splitNode =
             Node(
                 elementMap[sortedKeys[sortedKeys.size / 2]] ?: error("Vector doesn't exist."), null, null
