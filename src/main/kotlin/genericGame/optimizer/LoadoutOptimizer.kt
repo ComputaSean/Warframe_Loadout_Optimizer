@@ -2,7 +2,7 @@ package genericGame.optimizer
 
 import genericGame.loadoutGenerator.LoadoutGeneratorI
 import optimizer.Optimizer
-import spacePartition.SpacePartitionBuilder
+import spacePartition.SpacePartitionFactory
 import vector.Vector
 import vector.Vectorizable
 import java.util.*
@@ -10,7 +10,7 @@ import java.util.*
 class LoadoutOptimizer(
     loadoutGenerator: LoadoutGeneratorI,
     maxModsInstalled: Int,
-    spacePartitionBuilder: SpacePartitionBuilder
+    spacePartitionFactory: SpacePartitionFactory
 ) {
 
     private val optimizer: Optimizer
@@ -20,7 +20,7 @@ class LoadoutOptimizer(
         for (i in 0..maxModsInstalled) {
             loadouts.addAll(loadoutGenerator.getAllLoadouts(i))
         }
-        optimizer = Optimizer(loadouts, spacePartitionBuilder)
+        optimizer = Optimizer(loadouts, spacePartitionFactory)
     }
 
     fun getClosest(v: Vector): List<Vectorizable> {

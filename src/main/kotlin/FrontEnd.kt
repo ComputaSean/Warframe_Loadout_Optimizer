@@ -1,5 +1,5 @@
 import genericGame.optimizer.LoadoutOptimizer
-import spacePartition.kdTree.KDTreeBuilder
+import spacePartition.kdTree.KDTreeFactory
 import vector.EuclidianVector
 import vector.Vector
 import warframe.loadout.Loadout
@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
     val modParser = WarframeModParser("JSON/mods.json")
     val modManager = modParser.parse()
     val loadoutGenerator = LoadoutGenerator(modManager, maxCapacity, baseStats)
-    val optimizer = LoadoutOptimizer(loadoutGenerator, maxModsInstalled, KDTreeBuilder())
+    val optimizer = LoadoutOptimizer(loadoutGenerator, maxModsInstalled, KDTreeFactory())
 
     val pattern = "\\[([+-]?([0-9]*[.])?[0-9]+,\\s*){3}[+-]?([0-9]*[.])?[0-9]+]".toRegex()
 
