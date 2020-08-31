@@ -9,6 +9,7 @@ import java.util.*
 
 class LoadoutOptimizer(
     loadoutGenerator: LoadoutGeneratorI,
+    minModsInstalled: Int,
     maxModsInstalled: Int,
     spacePartitionFactory: SpacePartitionFactory
 ) {
@@ -17,11 +18,17 @@ class LoadoutOptimizer(
 
     init {
         val loadouts = ArrayList<Vectorizable>()
-        for (i in 0..maxModsInstalled) {
+        for (i in minModsInstalled..maxModsInstalled) {
             loadouts.addAll(loadoutGenerator.getAllLoadouts(i))
         }
         optimizer = Optimizer(loadouts, spacePartitionFactory)
     }
+
+    constructor(
+        loadoutGenerator: LoadoutGeneratorI,
+        maxModsInstalled: Int,
+        spacePartitionFactory: SpacePartitionFactory
+    ) : this(loadoutGenerator, 0, maxModsInstalled, spacePartitionFactory)
 
     fun getClosest(v: Vector): List<Vectorizable> {
         return optimizer.getClosest(v)
