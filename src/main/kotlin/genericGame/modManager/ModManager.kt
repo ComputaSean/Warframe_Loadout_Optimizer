@@ -1,18 +1,30 @@
 package genericGame.modManager
 
-import genericGame.modCreator.ModCreatorI
+import genericGame.modCreator.ModCreator
 
+/**
+ * Manages a collection of ModCreator instances.
+ */
 class ModManager {
 
-    private val modCreators = ArrayList<ModCreatorI>()
+    /**
+     * [modCreators] - stores all managed ModCreators.
+     */
+    private val modCreators = ArrayList<ModCreator>()
 
-    fun addModCreator(modCreator: ModCreatorI): Boolean {
+    /**
+     * Adds [modCreator] to be managed and returns whether it is already being managed.
+     */
+    fun addModCreator(modCreator: ModCreator): Boolean {
         if (modCreators.contains(modCreator)) return false
         modCreators.add(modCreator)
         return true
     }
 
-    fun getModCreator(index: Int): ModCreatorI? {
+    /**
+     * Returns the ModCreator at [index] from [modCreators], or null if [index] is out of bounds.
+     */
+    fun getModCreator(index: Int): ModCreator? {
         return if (index >= 0 && index < modCreators.size)
             modCreators[index]
         else {
@@ -20,7 +32,10 @@ class ModManager {
         }
     }
 
-    fun removeModCreator(index: Int): ModCreatorI? {
+    /**
+     * Removes the ModCreator at [index] from [modCreators], or null if [index] is out of bounds.
+     */
+    fun removeModCreator(index: Int): ModCreator? {
         return if (index >= 0 && index < modCreators.size) {
             modCreators.removeAt(index)
         } else {
@@ -28,12 +43,21 @@ class ModManager {
         }
     }
 
-    fun clearAll() = modCreators.clear()
-
-    fun getAll(): List<ModCreatorI> {
+    /**
+     * Return all ModCreators being managed.
+     */
+    fun getAll(): List<ModCreator> {
         return ArrayList(modCreators)
     }
 
+    /**
+     * Remove all managed ModCreators.
+     */
+    fun clearAll() = modCreators.clear()
+
+    /**
+     * Return the number of managed ModCreators.
+     */
     fun size(): Int {
         return modCreators.size
     }

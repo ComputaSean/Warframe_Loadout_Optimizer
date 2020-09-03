@@ -9,6 +9,7 @@ import vector.Vectorizable
  */
 class Node(val elements: List<Vectorizable>, var left: Node?, var right: Node?) {
 
+    /** [vector] is the representative vector */
     val vector = elements[0].getVector()
 
     /**

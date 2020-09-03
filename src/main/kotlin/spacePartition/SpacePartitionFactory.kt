@@ -8,8 +8,13 @@ import vector.Vectorizable
 interface SpacePartitionFactory {
 
     /**
-     * Create the space partition implementation with [vectors].
+     * Add [vectors] to be used to create the space partition implementation.
      */
-    fun create(vectors: List<Vectorizable>): SpacePartition
+    fun addAll(vectors: List<Vectorizable>)
+
+    /**
+     * Create and return the space partition implementation.
+     */
+    fun create(): SpacePartition
 
 }

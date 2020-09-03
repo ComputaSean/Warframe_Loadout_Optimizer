@@ -1,9 +1,9 @@
-import genericGame.optimizer.LoadoutOptimizer
+import genericGame.loadout.Loadout
+import genericGame.loadoutCreator.LoadoutGenerator
+import genericGame.loadoutOptimizer.LoadoutOptimizerFactory
 import spacePartition.kdTree.KDTreeFactory
 import vector.EuclidianVector
 import vector.Vector
-import warframe.loadout.Loadout
-import warframe.loadoutGenerator.LoadoutGenerator
 import warframe.modParser.WarframeModParser
 
 fun main(args: Array<String>) {
@@ -12,10 +12,9 @@ fun main(args: Array<String>) {
     val maxCapacity = 8
     val maxModsInstalled = 4        // 4 mods allows for a reasonable time to create all Loadouts and the KDTree
 
-    val modParser = WarframeModParser("JSON/mods.json")
-    val modManager = modParser.parse()
+    val modManager = WarframeModParser().parse("JSON/mods.json")
     val loadoutGenerator = LoadoutGenerator(modManager, maxCapacity, baseStats)
-    val optimizer = LoadoutOptimizer(loadoutGenerator, maxModsInstalled, KDTreeFactory())
+    val optimizer = LoadoutOptimizerFactory(loadoutGenerator, maxModsInstalled, KDTreeFactory()).create()
 
     val pattern = "\\[([+-]?([0-9]*[.])?[0-9]+,\\s*){3}[+-]?([0-9]*[.])?[0-9]+]".toRegex()
 
@@ -29,7 +28,7 @@ fun main(args: Array<String>) {
         if (input.isNotEmpty()) {
             if (pattern.matches(input)) {
                 val vector = convertToVector(input)
-                val loadouts = optimizer.getClosest(vector) as (MutableList<Loadout>)
+                val loadouts = optimizer.nearestNeighbor(vector) as (MutableList<Loadout>)
                 loadouts.sort()
                 val closestVector = loadouts[0].getVector()
                 if (loadouts.size > 1) print("Loadouts with the closest stats have ")
